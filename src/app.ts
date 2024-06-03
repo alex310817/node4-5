@@ -1,34 +1,20 @@
-const express = require('express');
-const bodyParser = require('body-parser');
+import express, { Request, Response, NextFunction } from 'express';
 
 const app = express();
-const PORT = 4003;
 
-// Middleware
-app.use(bodyParser.json());
-
-// Routes
-const menuRoutes = require('./src/controllers/routes/menu');
-const categoryRoutes = require('./src/controllers/routes/category');
-const dishRoutes = require('./src/controllers/routes/dish');
-
-// Routes Middleware
-app.use('/menus', menuRoutes);
-app.use('/categories', categoryRoutes);
-app.use('/dishes', dishRoutes);
-
-// Default route
-app.get('/', (req, res) => {
-  res.send('Welcome to the restaurant API!');
+app.use((_req: Request, res: Response, _next: NextFunction) => {
+    // Пример использования переменной res
+    console.log('Request received');
+    res.send('Hello, World!'); // Отправляем ответ клиенту
 });
 
-// Error handling middleware
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).send('Something broke!');
+app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
+    // Обработка ошибок
+    console.error(err);
+    res.status(500).send('Something went wrong');
 });
 
-// Start server
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+app.listen(3000, () => {
+    console.log('Server is running on port 3000');
 });
+
